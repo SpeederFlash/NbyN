@@ -1,31 +1,30 @@
 package tech.sfqr.nbyn;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Scanner;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class Interpreter {
-	private Scanner sc = new Scanner(System.in);
+private char[] tape;
+private static int head;
+private Scanner sc = new Scanner(System.in);
 public Interpreter(int rowlen){
-		char tape[] = new char[32768];
-		int head = 0;
+		tape = new char[32768];
+		head = 0;
 }
 
 private static void moveHead(int modVal){
 	head += modVal;
 	head %= 32768;
 }
-public void interpret(List<Stmt> matrices){
-	System.out.println("-----------");
-	for(int i = 0; i < matrices.size(); i++){
-		System.out.println(matrices.get(i).toString());
-		System.out.println("-----------");
-	}
-	for(int i = 0; i < matrices.size(); i++) {
+public void interpret(List<Stmt> matrices, int startI, Binder binderObj){
+	boolean err = false;
+	for(int i = startI; i < matrices.size(); i++) {
+		if(err){
+			System.out.printf("Undeclared function at Matrix: [%d]%n", i+1);
+			break;
+		}
 		Stmt matrix = matrices.get(i);
 		switch(matrix.func) {
 		case 0:
@@ -51,7 +50,7 @@ public void interpret(List<Stmt> matrices){
 			break;
 		case 2:
 			moveHead(matrix.index);
-			tape[head] = sc.nextInt();
+			tape[head] = (char)sc.nextInt();
 			moveHead(-matrix.index);
 			break;
 		case 3:
@@ -83,9 +82,19 @@ public void interpret(List<Stmt> matrices){
 				}
 				i--;
 			}
+			i--;
 			break;
 		default:
-			// Functions lie here, associated with matrix.func in hashmap, with [val, func, 0]
+			// Functions lie here, associated with matrix.func-8 in hashmap, with [val, func, 0]
+			List<Stmt> funcStmts = binderObj.getFunc(matrix.func - 8);
+			if(funcStmts.isEmpty()){
+				err = true;
+				i--;
+				break;
+			}
+			else{
+				this.interpret(funcStmts, 0, binderObj);
+			}
 			break;
 		}
 	}

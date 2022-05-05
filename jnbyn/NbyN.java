@@ -16,6 +16,7 @@ public class NbyN {
 private static final int ROWLEN = 4;
 
 private static final Interpreter inter = new Interpreter(ROWLEN);
+private static final Binder binderObj = new Binder(ROWLEN);
 
 public static void main(String[] args) throws IOException {
 	if (args.length != 1) {
@@ -31,15 +32,16 @@ private static void run(String fileName) throws IOException {
 	String byteString = new String(bytes, Charset.defaultCharset());
 	List<Token> tokens = scan(byteString); // Gets tokens
 	List<Stmt> matrices = parse(tokens); // Makes sure all matrices are legal
+	int startI = binderObj.bind(matrices);
 	if(matrices.get(0).func <= -1){
-		if(matrices.get(0).val == -2){
-			System.out.println("Incorrect number of brackets. Check for unmatched square brackets.");
+		if(matrices.get(0).func == -2){
+			System.out.println("Incorrect number of brackets. Check for unmatched matrices (matrices with function values of 0 and 7 must be in equal amounts).");
 			return;
 		}
 		System.out.println("Erroneous matrix at matrix ["+matrices.get(0).val+"]");
 		return;
 	}
-	inter.interpret(matrices);
+	inter.interpret(matrices, startI, binderObj);
 }
 
 private static List<Token> scan(String str){
@@ -115,11 +117,14 @@ private static List<Stmt> parse(List<Token> tokens){
 		}
 	}
 	int brackEqualizer = 0;
-	for(int i = 0; i < stmts.size(); i++){
-		if(stmts.get(i).val == 0){
+	System.out.println("-----------");
+	for(int k = 0; k < stmts.size(); k++){
+		System.out.println(stmts.get(k).toString());
+		System.out.println("-----------");
+		if(stmts.get(k).func == 0){
 			brackEqualizer+=1;
 		}
-		if(stmts.get(i).val == 7){
+		if(stmts.get(k).func == 7){
 			brackEqualizer-=1;
 		}
 	}
