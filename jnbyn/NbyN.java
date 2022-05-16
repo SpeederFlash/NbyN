@@ -115,6 +115,7 @@ private static List<Stmt> parse(List<Token> tokens){
 			}
 			i++;
 		}
+		System.out.println("Parsing "+ i);
 	}
 	int brackEqualizer = 0;
 	System.out.println("-----------");

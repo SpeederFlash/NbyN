@@ -38,13 +38,14 @@ public List<Stmt> getFunc(int n){
 public int bind(List<Stmt> matrices){
   for(int i = 0; i < matrices.size(); i++){
     Stmt matrix = matrices.get(i);
-    if(matrix.func < 8){
+    if((matrix.func < 8) || (!funcs[matrix.func-8].isEmpty())){
       return i;
     }
     else{
       funcs[matrix.func-8] = bindFunc(i+1, matrix.func, matrices);
       i = bindingHelper;
     }
+    System.out.println("Binding func: " + matrix.func + " at " + i);
   }
   return 0;
 }
