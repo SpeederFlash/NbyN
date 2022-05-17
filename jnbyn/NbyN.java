@@ -42,6 +42,7 @@ private static void run(String fileName) throws IOException {
 		return;
 	}
 	inter.interpret(matrices, startI, binderObj);
+	System.out.println("");
 }
 
 private static List<Token> scan(String str){
@@ -115,13 +116,9 @@ private static List<Stmt> parse(List<Token> tokens){
 			}
 			i++;
 		}
-		System.out.println("Parsing "+ i);
 	}
 	int brackEqualizer = 0;
-	System.out.println("-----------");
 	for(int k = 0; k < stmts.size(); k++){
-		System.out.println(stmts.get(k).toString());
-		System.out.println("-----------");
 		if(stmts.get(k).func == 0){
 			brackEqualizer+=1;
 		}

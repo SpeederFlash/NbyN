@@ -1,0 +1,66 @@
+Declaration of func one----
+[0,0,0,0
+1,1,1,0
+0,0,0,0]
+
+Call func two
+[0,0,0,0
+1,1,1,1
+0,0,0,0]
+
+[0,0,0,0
+1,1,1,0
+0,0,0,0]
+-----------------------
+
+Declaration of func two----
+[0,0,0,0
+1,1,1,1
+0,0,0,0]
+
+Print at right of head
+[0,0,0,1
+0,0,1,1
+0,0,0,0]
+
+Call func one
+[0,0,0,0
+1,1,1,0
+0,0,0,0]
+
+[0,0,0,0
+1,1,1,1
+0,0,0,0]
+-----------------------
+
+Input
+[0,0,0,0
+0,0,1,0
+0,0,0,0]
+
+Open bracket
+[0,0,0,0
+0,0,0,0
+0,0,0,0]
+
+Subtract one from head
+[0,0,0,0
+0,1,1,0,
+0,0,0,1]
+
+Add one to right of head
+[0,0,0,1
+0,0,0,1,
+0,0,0,1]
+
+Close bracket
+[0,0,0,0
+0,1,1,1
+0,0,0,0]
+
+Call func two
+[0,0,0,0
+1,1,1,1
+0,0,0,0]
+
+This will infinitely recurse, which causes a stack overflow error in Java

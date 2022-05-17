@@ -7,17 +7,17 @@ import java.util.List;
 
 public class Binder{
 private static int bindingHelper = 0;
-private List<Stmt>[] funcs;
+private ArrayList<ArrayList<Stmt>> funcs;
 public Binder(int n){
   int maxFuncs = ((int) Math.pow(2, n)) - 8;
-  funcs = new List[maxFuncs];
+  funcs = new ArrayList<ArrayList<Stmt>>();
   for(int i = 0; i < maxFuncs; i++){
-    funcs[i] = new ArrayList<Stmt>();
+    funcs.add(new ArrayList<Stmt>());
   }
 }
 
-private List<Stmt> bindFunc(int i, int f, List<Stmt> matrices){
-  List<Stmt> output = new ArrayList<Stmt>();
+private ArrayList<Stmt> bindFunc(int i, int f, List<Stmt> matrices){
+  ArrayList<Stmt> output = new ArrayList<Stmt>();
   for(int j = i; j < matrices.size(); j++){
     Stmt matrix = matrices.get(j);
     if(matrix.func == f){
@@ -32,20 +32,19 @@ private List<Stmt> bindFunc(int i, int f, List<Stmt> matrices){
 }
 
 public List<Stmt> getFunc(int n){
-  return funcs[n];
+  return funcs.get(n);
 }
 
 public int bind(List<Stmt> matrices){
   for(int i = 0; i < matrices.size(); i++){
     Stmt matrix = matrices.get(i);
-    if((matrix.func < 8) || (!funcs[matrix.func-8].isEmpty())){
+    if((matrix.func < 8) || (!funcs.get(matrix.func-8).isEmpty())){
       return i;
     }
     else{
-      funcs[matrix.func-8] = bindFunc(i+1, matrix.func, matrices);
+      funcs.set(matrix.func-8, bindFunc(i+1, matrix.func, matrices));
       i = bindingHelper;
     }
-    System.out.println("Binding func: " + matrix.func + " at " + i);
   }
   return 0;
 }

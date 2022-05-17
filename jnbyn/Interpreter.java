@@ -55,7 +55,7 @@ public void interpret(List<Stmt> matrices, int startI, Binder binderObj){
 			break;
 		case 3:
 			moveHead(matrix.index);
-			System.out.println(tape[head]);
+			System.out.print(tape[head]);
 			moveHead(-matrix.index);
 			break;
 		case 4:
